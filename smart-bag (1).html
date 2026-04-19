@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Traveler Pro X1</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+
+/* ══════════════════════════════════════════════
+   TOKENS · DARK
+══════════════════════════════════════════════ */
+:root {
+  --bg:    #0e0f13;
+  --bg2:   #13151b;
+  --bg3:   #191c25;
+  --card:  #181b23;
+  --card2: #1e2130;
+
+  --bdr:   rgba(255,255,255,0.063);
+  --bdr2:  rgba(255,255,255,0.105);
+  --bdr3:  rgba(255,255,255,0.17);
+
+  --t1: #eaedf5;
+  --t2: #7c8598;
+  --t3: #444d61;
+
+  /* Accent: cool slate-blue, calibrated, not neon */
+  --a:     #5b8dee;
+  --a-dk:  #3d6cd4;
+  --a-bg:  rgba(91,141,238,0.09);
+  --a-bdr: rgba(91,141,238,0.20);
+
+  /* Semantic */
+  --ok:      #4aab80;
+  --ok-bg:   rgba(74,171,128,0.09);
+  --ok-bdr:  rgba(74,171,128,0.20);
+  --warn:    #c0903a;
+  --warn-bg: rgba(192,144,58,0.09);
+  --warn-bdr:rgba(192,144,58,0.20);
+  --err:     #be5e58;
+  --err-bg:  rgba(190,94,88,0.09);
+  --err-bdr: rgba(190,94,88,0.20);
+
+  --r:    16px;
+  --r-sm: 11px;
+  --r-xs: 7px;
+  --nav-h: 66px;
+
+  --ease: cubic-bezier(0.4,0,0.2,1);
+  --dur:  0.2s;
+  --dur-s:0.32s;
+
+  --f: 'Outfit', sans-serif;
+  --fm:'JetBrains Mono', monospace;
+
+  --sh:    0 2px 18px rgba(0,0,0,0.42);
+  --sh-sm: 0 1px 7px  rgba(0,0,0,0.28);
+}
+[data-theme="light"] {
+  --bg:   #f0f2f7;
+  --bg2:  #e8eaf1;
+  --bg3:  #dde0ea;
+  --card: #ffffff;
+  --card2:#f5f7fc;
+  --bdr:  rgba(0,0,0,0.063);
+  --bdr2: rgba(0,0,0,0.10);
+  --bdr3: rgba(0,0,0,0.16);
+  --t1: #0d1017;
+  --t2: #545c72;
+  --t3: #9099b0;
+  --sh:    0 2px 18px rgba(0,0,0,0.07);
+  --sh-sm: 0 1px 7px  rgba(0,0,0,0.05);
+}
+
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%;font-family:var(--f);-webkit-font-smoothing:antialiased}
+button{cursor:pointer;border:none;background:none;font-family:inherit;outline:none}
+a{text-decoration:none}
+
+/* ── SHELL ── */
+body{
+  background:#07080c;
+  display:flex;align-items:center;justify-content:center;
+  min-height:100dvh;
+}
+#app{
+  width:100%;max-width:428px;
+  height:100dvh;max-height:926px;
+  background:var(--bg);
+  display:flex;flex-direction:column;
+  overflow:hidden;position:relative;
+  transition:background var(--dur-s) var(--ease);
+}
+@media(min-width:480px){
+  body{background:#050609}
+  #app{
+    border-radius:40px;
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,0.052),
+      inset 0 0 0 1px rgba(255,255,255,0.022),
+      0 44px 110px rgba(0,0,0,0.78);
+    height:calc(100dvh - 36px);
+  }
+}
+
+/* ── TOPBAR ── */
+.topbar{
+  flex-shrink:0;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:14px 18px 12px;
+  border-bottom:1px solid var(--bdr);
+  background:var(--bg);
+  z-index:20;
+  transition:background var(--dur-s) var(--ease), border-color var(--dur-s) var(--ease);
+}
+.logo{display:flex;align-items:center;gap:8px}
+.logo-mark{
+  width:28px;height:28px;border-radius:8px;
+  background:var(--a);
+  display:flex;align-items:center;justify-content:center;
+}
+.logo-mark svg{width:15px;height:15px;color:#fff}
+.logo-wordmark{font-size:15px;font-weight:700;letter-spacing:-0.15px;color:var(--t1)}
+.logo-wordmark em{font-style:normal;color:var(--t3);font-weight:400}
+
+.topbar-r{display:flex;gap:7px;align-items:center}
+.conn-chip{
+  display:flex;align-items:center;gap:5px;
+  padding:4px 9px 4px 7px;
+  border-radius:100px;
+  background:var(--ok-bg);border:1px solid var(--ok-bdr);
+  font-size:10.5px;font-weight:600;color:var(--ok);letter-spacing:0.1px;
+}
+.conn-dot{width:5px;height:5px;border-radius:50%;background:var(--ok);animation:blink 2.5s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.icon-btn{
+  width:33px;height:33px;border-radius:9px;
+  background:var(--card);border:1px solid var(--bdr2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--t2);transition:all var(--dur) var(--ease);
+}
+.icon-btn svg{width:15px;height:15px}
+.icon-btn:hover{background:var(--bg3);color:var(--t1)}
+.icon-btn:active{transform:scale(0.91)}
+
+/* ── PAGES CONTAINER – isolated scroll per page ── */
+.pages{
+  flex:1;
+  overflow:hidden;
+  position:relative;
+}
+.page{
+  position:absolute;inset:0;
+  overflow-y:auto;overflow-x:hidden;
+  -webkit-overflow-scrolling:touch;
+  scrollbar-width:none;
+  padding:16px 17px 14px;
+  opacity:0;pointer-events:none;
+  transform:translateY(10px);
+  transition:opacity var(--dur-s) var(--ease), transform var(--dur-s) var(--ease);
+}
+.page::-webkit-scrollbar{display:none}
+.page.active{opacity:1;pointer-events:all;transform:translateY(0)}
+
+/* ── LABEL ── */
+.lbl{
+  font-size:10.5px;font-weight:700;
+  letter-spacing:0.85px;text-transform:uppercase;
+  color:var(--t3);
+  margin:17px 0 8px;
+}
+.lbl:first-child{margin-top:0}
+
+/* ── CARD ── */
+.card{
+  background:var(--card);
+  border:1px solid var(--bdr);
+  border-radius:var(--r);
+  padding:15px;
+  box-shadow:var(--sh-sm);
+  transition:background var(--dur-s) var(--ease), border-color var(--dur-s) var(--ease);
+}
+.card+.card,.card+.lbl{margin-top:9px}
+
+/* ── BUTTONS ── */
+.btn-p{
+  width:100%;height:49px;
+  border-radius:var(--r-sm);
+  font-family:var(--f);font-size:13.5px;font-weight:600;
+  color:#fff;background:var(--a);
+  display:flex;align-items:center;justify-content:center;gap:8px;
+  box-shadow:0 1px 0 rgba(255,255,255,0.09) inset, 0 3px 14px rgba(91,141,238,0.20);
+  transition:all var(--dur) var(--ease);
+  position:relative;overflow:hidden;
+}
+.btn-p::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(255,255,255,0.07),transparent);
+  border-radius:inherit;pointer-events:none;
+}
+.btn-p:hover{background:var(--a-dk);box-shadow:0 1px 0 rgba(255,255,255,0.09) inset,0 4px 18px rgba(91,141,238,0.27)}
+.btn-p:active{transform:scale(0.972);box-shadow:0 1px 0 rgba(0,0,0,0.1) inset}
+.btn-p.err{
+  background:var(--err);
+  box-shadow:0 1px 0 rgba(255,255,255,0.09) inset,0 3px 14px rgba(190,94,88,0.18);
+}
+.btn-p.err:hover{box-shadow:0 1px 0 rgba(255,255,255,0.09) inset,0 4px 18px rgba(190,94,88,0.25)}
+.btn-p svg{width:15px;height:15px;flex-shrink:0}
+
+.btn-s{
+  width:100%;height:44px;
+  border-radius:var(--r-sm);
+  font-size:13px;font-weight:600;color:var(--t1);
+  background:var(--bg3);border:1px solid var(--bdr2);
+  display:flex;align-items:center;justify-content:center;gap:7px;
+  transition:all var(--dur) var(--ease);
+}
+.btn-s:hover{background:var(--card2);border-color:var(--bdr3)}
+.btn-s:active{transform:scale(0.972)}
+.btn-s svg{width:14px;height:14px;color:var(--t2)}
+
+/* ── STATUS RING ── */
+.ring-wrap{
+  display:flex;flex-direction:column;align-items:center;
+  padding:20px 0 16px;gap:11px;
+}
+.ring-track{
+  width:132px;height:132px;border-radius:50%;
+  position:relative;display:flex;align-items:center;justify-content:center;
+}
+.ring-track::before{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  border:1.5px solid var(--bdr2);
+}
+.ring-track::after{
+  content:'';position:absolute;inset:-5px;border-radius:50%;
+  border:1.5px solid transparent;
+  border-top-color:var(--a);
+  border-right-color:rgba(91,141,238,0.28);
+  animation:rspin 4.5s linear infinite;
+}
+@keyframes rspin{to{transform:rotate(360deg)}}
+.ring-core{
+  width:104px;height:104px;border-radius:50%;
+  background:var(--bg3);border:1px solid var(--bdr);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;
+}
+.ring-core svg{width:24px;height:24px;color:var(--t2)}
+.ring-mode{
+  font-size:9.5px;font-weight:800;
+  letter-spacing:1.2px;color:var(--a);text-transform:uppercase;
+}
+.status-line{font-size:12.5px;color:var(--t2);font-weight:400}
+.status-line b{font-weight:600;color:var(--ok)}
+
+/* ── INDICATORS ── */
+.ind-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.ind{
+  background:var(--bg3);border:1px solid var(--bdr);
+  border-radius:var(--r-sm);
+  padding:10px 5px;text-align:center;
+  transition:all var(--dur) var(--ease);
+}
+.ind.on{background:var(--a-bg);border-color:var(--a-bdr)}
+.ind-pip{
+  width:5.5px;height:5.5px;border-radius:50%;
+  background:var(--t3);margin:0 auto 6px;
+  transition:background var(--dur) var(--ease);
+}
+.ind.on .ind-pip{background:var(--a)}
+.ind-lbl{font-size:9.5px;font-weight:600;letter-spacing:0.2px;color:var(--t3)}
+.ind.on .ind-lbl{color:var(--a)}
+
+/* ── SENSORS ROW ── */
+.sensors{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+
+/* Signal */
+.sig-rssi{font-family:var(--fm);font-size:19px;font-weight:500;color:var(--t1);letter-spacing:-0.4px}
+.sig-sub{font-size:10.5px;color:var(--t3);margin-top:2px}
+.sig-bars{
+  display:flex;align-items:flex-end;gap:3px;
+  height:26px;margin-top:10px;
+}
+.sb{flex:1;border-radius:2.5px;background:var(--bg3);transition:background 0.3s ease}
+.sb:nth-child(1){height:34%}.sb:nth-child(2){height:52%}
+.sb:nth-child(3){height:68%}.sb:nth-child(4){height:84%}.sb:nth-child(5){height:100%}
+.sb.lit{background:var(--a)}
+
+/* Compass */
+.cmp-wrap{display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:7px}
+.cmp-dial{
+  width:74px;height:74px;border-radius:50%;
+  background:var(--bg3);border:1px solid var(--bdr2);
+  position:relative;display:flex;align-items:center;justify-content:center;
+}
+.cmp-needle{
+  position:absolute;
+  width:2.5px;height:34px;
+  top:50%;left:50%;
+  transform-origin:bottom center;
+  transform:translateX(-50%) translateY(-100%) rotate(45deg);
+  border-radius:2.5px;overflow:hidden;
+  transition:transform 0.75s cubic-bezier(0.34,1.2,0.64,1);
+}
+.cmp-n{height:50%;background:var(--err);border-radius:2.5px 2.5px 0 0}
+.cmp-s{height:50%;background:var(--t3);border-radius:0 0 2.5px 2.5px}
+.cmp-lbl{position:absolute;font-size:7.5px;font-weight:700;color:var(--t3)}
+.cmp-lbl.n{top:4px;left:50%;transform:translateX(-50%)}
+.cmp-lbl.s{bottom:4px;left:50%;transform:translateX(-50%)}
+.cmp-lbl.e{right:5px;top:50%;transform:translateY(-50%)}
+.cmp-lbl.w{left:5px;top:50%;transform:translateY(-50%)}
+.cmp-deg{font-family:var(--fm);font-size:16px;font-weight:500;color:var(--t1);text-align:center}
+.cmp-dir{font-size:10px;color:var(--t3);text-align:center;margin-top:1px}
+
+/* ── PRODUCT CARD ── */
+.product-card{border-radius:var(--r);background:var(--card);border:1px solid var(--bdr);overflow:hidden}
+.product-img{
+  width:100%;height:168px;
+  background:var(--bg2);
+  display:flex;align-items:center;justify-content:center;
+  position:relative;overflow:hidden;
+}
+.product-img-inner{
+  transition:transform 0.45s var(--ease);
+}
+.product-img:hover .product-img-inner{transform:scale(1.06)}
+.product-pip{
+  position:absolute;top:10px;left:10px;
+  background:var(--a-bg);border:1px solid var(--a-bdr);
+  padding:3px 8px;border-radius:100px;
+  font-size:9.5px;font-weight:700;color:var(--a);letter-spacing:0.5px;
+}
+.product-body{padding:12px 14px 14px}
+.product-title{font-size:14.5px;font-weight:700;color:var(--t1);letter-spacing:-0.2px}
+.product-desc{font-size:11.5px;color:var(--t2);margin-top:4px;line-height:1.6}
+.product-tags{display:flex;gap:6px;margin-top:9px;flex-wrap:wrap}
+.product-tag{
+  padding:3px 9px;border-radius:100px;
+  font-size:10px;font-weight:600;
+  background:var(--bg3);border:1px solid var(--bdr);color:var(--t3);
+}
+
+/* ── LOG ── */
+.log-wrap{display:flex;flex-direction:column;gap:1px}
+.log-item{
+  display:flex;align-items:flex-start;gap:9px;
+  padding:8px 9px;border-radius:var(--r-xs);
+  transition:background var(--dur) var(--ease);
+}
+.log-item:hover{background:var(--bg3)}
+.log-ic{
+  width:24px;height:24px;flex-shrink:0;border-radius:6px;
+  display:flex;align-items:center;justify-content:center;
+}
+.log-ic svg{width:12px;height:12px}
+.log-ic.ok{background:var(--ok-bg);color:var(--ok)}
+.log-ic.info{background:var(--a-bg);color:var(--a)}
+.log-ic.warn{background:var(--warn-bg);color:var(--warn)}
+.log-msg{font-size:11.5px;color:var(--t2);line-height:1.4}
+.log-ts{font-family:var(--fm);font-size:9.5px;color:var(--t3);margin-top:2px}
+
+/* ── LOCATION ── */
+.gps-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  padding:4px 10px;border-radius:100px;
+  font-size:10.5px;font-weight:600;
+}
+.gps-badge.searching{background:var(--warn-bg);border:1px solid var(--warn-bdr);color:var(--warn)}
+.gps-badge.fixed{background:var(--ok-bg);border:1px solid var(--ok-bdr);color:var(--ok)}
+.gps-dot{width:5px;height:5px;border-radius:50%;background:currentColor;animation:blink 1.5s infinite}
+
+.coord-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:9px 0;border-bottom:1px solid var(--bdr);
+}
+.coord-row:last-child{border-bottom:none;padding-bottom:0}
+.coord-k{font-size:10.5px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:0.3px}
+.coord-v{font-family:var(--fm);font-size:12.5px;color:var(--t1);font-weight:500}
+.coord-v.dim{color:var(--t3)}
+
+.map-box{
+  width:100%;height:182px;
+  background:var(--bg2);border-radius:var(--r-sm);
+  border:1px solid var(--bdr);
+  overflow:hidden;position:relative;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:7px;
+}
+.map-grid{
+  position:absolute;inset:0;
+  background-image:linear-gradient(var(--bdr) 1px,transparent 1px),linear-gradient(90deg,var(--bdr) 1px,transparent 1px);
+  background-size:26px 26px;
+}
+.map-pin-wrap{position:relative;z-index:1;animation:pinbounce 2.2s ease infinite}
+.map-pin-wrap svg{width:26px;height:26px;color:var(--a)}
+@keyframes pinbounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.map-note{font-size:11px;color:var(--t3);position:relative;z-index:1}
+
+/* ── REMOTE ── */
+.cmd-bar{text-align:center;padding:7px 0 11px;font-size:11.5px;color:var(--t3)}
+.cmd-bar span{font-family:var(--fm);color:var(--a);font-size:12.5px;font-weight:500}
+
+.dpad-wrap{display:flex;justify-content:center;padding:4px 0 8px}
+.dpad{display:grid;grid-template-areas:". u ." "l s r" ". d .";gap:6px}
+.dp{
+  width:68px;height:68px;border-radius:13px;
+  background:var(--card);border:1px solid var(--bdr2);
+  color:var(--t1);
+  display:flex;align-items:center;justify-content:center;
+  transition:all 0.1s ease;
+  user-select:none;-webkit-user-select:none;
+  position:relative;overflow:hidden;
+}
+.dp::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(to bottom,rgba(255,255,255,0.04),transparent);
+  border-radius:inherit;pointer-events:none;
+}
+.dp svg{width:19px;height:19px;position:relative;z-index:1}
+.dp:active,.dp.pressed{
+  background:var(--bg3);border-color:var(--a);
+  box-shadow:0 0 0 2px var(--a-bg);
+  transform:scale(0.9);
+}
+.dp[data-dir="u"]{grid-area:u}
+.dp[data-dir="d"]{grid-area:d}
+.dp[data-dir="l"]{grid-area:l}
+.dp[data-dir="r"]{grid-area:r}
+.dp[data-dir="s"]{
+  grid-area:s;
+  background:var(--err-bg);border-color:var(--err-bdr);color:var(--err);
+}
+.dp[data-dir="s"]:active,.dp[data-dir="s"].pressed{
+  border-color:var(--err);box-shadow:0 0 0 2px var(--err-bg);
+}
+.dp-stop{font-size:9.5px;font-weight:800;letter-spacing:0.6px;position:relative;z-index:1}
+
+.speed-row{display:flex;align-items:center;gap:11px}
+.speed-lbl{font-size:11.5px;color:var(--t3);font-weight:500;white-space:nowrap}
+input[type=range]{
+  flex:1;height:3px;border-radius:2px;
+  background:var(--bg3);outline:none;appearance:none;-webkit-appearance:none;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:17px;height:17px;border-radius:50%;
+  background:var(--t1);border:2.5px solid var(--a);
+  cursor:pointer;box-shadow:0 1px 5px rgba(0,0,0,0.28);
+}
+input[type=range]::-moz-range-thumb{
+  width:17px;height:17px;border-radius:50%;
+  background:var(--t1);border:2.5px solid var(--a);cursor:pointer;
+}
+.speed-val{font-family:var(--fm);font-size:13px;font-weight:500;color:var(--t1);min-width:34px;text-align:right}
+
+.qcgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.qc{
+  background:var(--card);border:1px solid var(--bdr);
+  border-radius:var(--r-sm);padding:13px 11px;
+  text-align:left;cursor:pointer;
+  display:flex;flex-direction:column;gap:7px;
+  transition:all var(--dur) var(--ease);
+}
+.qc:hover{background:var(--card2);border-color:var(--bdr2)}
+.qc:active{transform:scale(0.95)}
+.qc-ic{
+  width:32px;height:32px;border-radius:8px;
+  background:var(--bg3);border:1px solid var(--bdr);
+  display:flex;align-items:center;justify-content:center;color:var(--t2);
+}
+.qc-ic svg{width:15px;height:15px}
+.qc-lbl{font-size:11.5px;font-weight:600;color:var(--t2)}
+
+/* ── ABOUT ── */
+.about-hero{
+  background:var(--card);border:1px solid var(--bdr);
+  border-radius:var(--r);padding:18px 16px;
+  display:flex;flex-direction:column;gap:6px;
+}
+.about-badge{
+  display:inline-flex;align-items:center;gap:5px;
+  background:var(--a-bg);border:1px solid var(--a-bdr);
+  padding:3px 9px;border-radius:100px;
+  font-size:9.5px;font-weight:700;color:var(--a);letter-spacing:0.6px;
+  text-transform:uppercase;width:fit-content;
+}
+.about-badge svg{width:9px;height:9px}
+.about-title{font-size:21px;font-weight:800;color:var(--t1);letter-spacing:-0.4px;line-height:1.18}
+.about-desc{font-size:12.5px;color:var(--t2);line-height:1.65}
+
+.feat{display:flex;align-items:flex-start;gap:11px;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.feat:last-child{border-bottom:none;padding-bottom:0}
+.feat-ic{
+  width:32px;height:32px;flex-shrink:0;border-radius:8px;
+  background:var(--bg3);border:1px solid var(--bdr);
+  display:flex;align-items:center;justify-content:center;color:var(--t2);
+}
+.feat-ic svg{width:15px;height:15px}
+.feat-title{font-size:12.5px;font-weight:600;color:var(--t1);margin-bottom:3px}
+.feat-desc{font-size:11px;color:var(--t3);line-height:1.55}
+
+.chips{display:flex;flex-wrap:wrap;gap:5px;margin-top:5px}
+.chip{padding:3px 9px;border-radius:100px;font-size:10.5px;font-weight:600;background:var(--bg3);border:1px solid var(--bdr);color:var(--t3)}
+.chip.blue{background:var(--a-bg);border-color:var(--a-bdr);color:var(--a)}
+.chip.teal{background:var(--ok-bg);border-color:var(--ok-bdr);color:var(--ok)}
+
+.road{display:flex;gap:10px;padding:9px 0;position:relative}
+.road+.road::before{content:'';position:absolute;top:0;left:12.5px;width:1px;bottom:0;background:var(--bdr)}
+.road-n{
+  width:26px;height:26px;flex-shrink:0;border-radius:50%;
+  background:var(--bg3);border:1px solid var(--bdr2);
+  display:flex;align-items:center;justify-content:center;
+  font-size:10.5px;font-weight:800;color:var(--t3);
+  position:relative;z-index:1;font-family:var(--fm);
+}
+.road-n.done{background:var(--a-bg);border-color:var(--a-bdr);color:var(--a)}
+.road-b{padding-top:2px}
+.road-title{font-size:12.5px;font-weight:600;color:var(--t1)}
+.road-desc{font-size:11px;color:var(--t3);margin-top:2px;line-height:1.5}
+
+/* ── CONTACT ── */
+.dev-hero{background:var(--card);border:1px solid var(--bdr);border-radius:var(--r);padding:20px 16px}
+.dev-av{
+  width:60px;height:60px;border-radius:16px;
+  background:var(--bg3);border:1px solid var(--bdr2);
+  display:flex;align-items:center;justify-content:center;
+  color:var(--t2);margin-bottom:11px;
+}
+.dev-av svg{width:26px;height:26px}
+.dev-name{font-size:17.5px;font-weight:700;color:var(--t1);letter-spacing:-0.3px}
+.dev-role{font-size:11.5px;color:var(--t3);margin-top:3px}
+.dev-quote{
+  margin-top:12px;padding:10px 12px;
+  border-left:2px solid var(--a);
+  background:var(--a-bg);border-radius:0 var(--r-xs) var(--r-xs) 0;
+  font-size:12px;color:var(--t2);font-style:italic;line-height:1.55;
+}
+
+.info-item{display:flex;align-items:center;gap:10px;padding:10px 0;border-bottom:1px solid var(--bdr)}
+.info-item:last-child{border-bottom:none}
+.info-ic{
+  width:30px;height:30px;flex-shrink:0;border-radius:8px;
+  background:var(--bg3);border:1px solid var(--bdr);
+  display:flex;align-items:center;justify-content:center;color:var(--t2);
+}
+.info-ic svg{width:13px;height:13px}
+.info-k{font-size:9.5px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:0.3px}
+.info-v{font-size:12.5px;color:var(--t1);font-weight:500;margin-top:1px}
+.info-v a{color:var(--a)}
+
+.ver-row{display:flex;align-items:center;justify-content:space-between;padding:9.5px 0;border-bottom:1px solid var(--bdr)}
+.ver-row:last-child{border-bottom:none}
+.ver-k{font-size:12px;color:var(--t3)}
+.ver-v{font-family:var(--fm);font-size:11.5px;color:var(--t2)}
+
+/* ── NAV ── */
+.bottom-nav{
+  flex-shrink:0;display:flex;align-items:center;
+  height:var(--nav-h);
+  background:var(--card);border-top:1px solid var(--bdr);
+  padding:0 3px;padding-bottom:env(safe-area-inset-bottom);
+  transition:background var(--dur-s) var(--ease), border-color var(--dur-s) var(--ease);
+}
+.nav-btn{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:3.5px;padding:5px 2px;
+  color:var(--t3);border-radius:var(--r-sm);
+  transition:color var(--dur) var(--ease);
+  position:relative;
+}
+.nav-btn.active{color:var(--a)}
+.nav-btn.active::before{
+  content:'';position:absolute;top:0;left:28%;right:28%;
+  height:2px;border-radius:0 0 2px 2px;background:var(--a);
+}
+.nav-btn svg{width:18px;height:18px}
+.nav-lbl{font-size:9px;font-weight:600;letter-spacing:0.1px}
+
+/* ── TOAST ── */
+#toast{
+  position:absolute;top:65px;left:15px;right:15px;
+  background:var(--t1);color:var(--bg);
+  padding:10px 15px;border-radius:var(--r-sm);
+  font-size:12.5px;font-weight:500;
+  z-index:200;opacity:0;
+  transform:translateY(-7px) scale(0.97);
+  transition:all 0.2s var(--ease);
+  pointer-events:none;text-align:center;box-shadow:var(--sh);
+}
+#toast.show{opacity:1;transform:translateY(0) scale(1)}
+
+/* ── MISC ── */
+.row-bet{display:flex;align-items:center;justify-content:space-between}
+.mt9{margin-top:9px}
+.mt10{margin-top:10px}
+.gap8{gap:8px}
+.spacer{height:10px}
+
+/* ── STACK DIVIDER ── */
+.stack-label{font-size:10.5px;font-weight:600;color:var(--t3);text-transform:uppercase;letter-spacing:0.5px;margin:12px 0 6px}
+.stack-label:first-child{margin-top:0}
+
+</style>
+</head>
+<body>
+<div id="app">
+
+<!-- ════════ TOPBAR ════════ -->
+<div class="topbar">
+  <div class="logo">
+    <div class="logo-mark">
+      <!-- Bag icon -->
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+        <rect x="5" y="8" width="14" height="13" rx="2"/><path d="M8 8V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/>
+        <line x1="12" y1="12" x2="12" y2="17"/><line x1="9.5" y1="14.5" x2="14.5" y2="14.5"/>
+      </svg>
+    </div>
+    <div class="logo-wordmark">Traveler&nbsp;<em>Pro X1</em></div>
+  </div>
+  <div class="topbar-r">
+    <div class="conn-chip"><div class="conn-dot"></div>Online</div>
+    <button class="icon-btn" id="themeBtn" onclick="toggleTheme()" title="Toggle theme">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+    </button>
+  </div>
+</div>
+
+<!-- ════════ PAGES ════════ -->
+<div class="pages">
+
+  <!-- ══ DASHBOARD ══ -->
+  <div class="page active" id="page-dashboard">
+
+    <div class="card">
+      <!-- Ring -->
+      <div class="ring-wrap">
+        <div class="ring-track">
+          <div class="ring-core">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+              <rect x="5" y="8" width="14" height="13" rx="2"/>
+              <path d="M8 8V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/>
+              <line x1="12" y1="12" x2="12" y2="17"/>
+              <line x1="9.5" y1="14.5" x2="14.5" y2="14.5"/>
+            </svg>
+            <span class="ring-mode" id="ringMode">STANDBY</span>
+          </div>
+        </div>
+        <div class="status-line">System: <b id="sysStatus">Connected</b></div>
+      </div>
+
+      <!-- Follow button -->
+      <button class="btn-p" id="followBtn" onclick="toggleFollow()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/>
+          <path d="m9 13-3 7"/><path d="m15 13 3 7"/>
+        </svg>
+        <span id="followTxt">Start Following</span>
+      </button>
+
+      <!-- Find me -->
+      <button class="btn-s mt9" id="findMeBtn" onclick="findMe()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="12" r="3"/>
+          <path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/>
+        </svg>
+        Find Me
+      </button>
+    </div>
+
+    <!-- Indicators -->
+    <div class="lbl">System Indicators</div>
+    <div class="ind-grid">
+      <div class="ind" id="ind-follow"><div class="ind-pip"></div><div class="ind-lbl">Follow</div></div>
+      <div class="ind on" id="ind-ready"><div class="ind-pip"></div><div class="ind-lbl">Ready</div></div>
+      <div class="ind" id="ind-moving"><div class="ind-pip"></div><div class="ind-lbl">Moving</div></div>
+      <div class="ind" id="ind-gps"><div class="ind-pip"></div><div class="ind-lbl">GPS</div></div>
+    </div>
+
+    <!-- Sensors -->
+    <div class="lbl">Sensors</div>
+    <div class="card">
+      <div class="sensors">
+        <!-- Signal -->
+        <div>
+          <div class="sig-rssi" id="rssiVal">−58 dBm</div>
+          <div class="sig-sub">RSSI · BLE</div>
+          <div class="sig-bars" id="sigBars">
+            <div class="sb lit"></div><div class="sb lit"></div>
+            <div class="sb lit"></div><div class="sb lit"></div>
+            <div class="sb"></div>
+          </div>
+        </div>
+        <!-- Compass -->
+        <div class="cmp-wrap">
+          <div class="cmp-dial">
+            <div class="cmp-needle" id="cmpNeedle">
+              <div class="cmp-n"></div><div class="cmp-s"></div>
+            </div>
+            <span class="cmp-lbl n">N</span><span class="cmp-lbl s">S</span>
+            <span class="cmp-lbl e">E</span><span class="cmp-lbl w">W</span>
+          </div>
+          <div>
+            <div class="cmp-deg" id="cmpDeg">45°</div>
+            <div class="cmp-dir" id="cmpDir">NE</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Product Showcase -->
+    <div class="lbl">Product Showcase</div>
+    <div class="product-card">
+      <div class="product-img">
+        <div class="map-grid" style="opacity:0.6"></div>
+        <div class="product-pip">Model X1</div>
+        <div class="product-img-inner">
+          <!-- SVG bag illustration — clean, technical style -->
+          <svg width="118" height="118" viewBox="0 0 118 118" fill="none" xmlns="http://www.w3.org/2000/svg" style="color:var(--t2)">
+            <!-- body -->
+            <rect x="16" y="36" width="86" height="68" rx="10" fill="currentColor" fill-opacity="0.08" stroke="currentColor" stroke-opacity="0.3" stroke-width="2"/>
+            <!-- handle -->
+            <path d="M40 36V27C40 19.268 46.268 13 54 13H64C71.732 13 78 19.268 78 27V36" stroke="currentColor" stroke-opacity="0.4" stroke-width="2" stroke-linecap="round" fill="none"/>
+            <!-- horizontal zip line -->
+            <line x1="16" y1="70" x2="102" y2="70" stroke="currentColor" stroke-opacity="0.18" stroke-width="1.5" stroke-dasharray="5 4"/>
+            <!-- wheels -->
+            <circle cx="33" cy="104" r="5.5" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
+            <circle cx="85" cy="104" r="5.5" fill="currentColor" fill-opacity="0.16" stroke="currentColor" stroke-opacity="0.25" stroke-width="1.5"/>
+            <!-- lock -->
+            <rect x="50" y="56" width="18" height="14" rx="3.5" fill="currentColor" fill-opacity="0.1" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5"/>
+            <path d="M54 56V52a5 5 0 0 1 10 0v4" stroke="currentColor" stroke-opacity="0.35" stroke-width="1.5" stroke-linecap="round" fill="none"/>
+            <circle cx="59" cy="63" r="2" fill="currentColor" fill-opacity="0.3"/>
+            <!-- tag -->
+            <rect x="80" y="46" width="22" height="15" rx="4" fill="currentColor" fill-opacity="0.07" stroke="currentColor" stroke-opacity="0.22" stroke-width="1.5"/>
+            <line x1="86" y1="51" x2="96" y2="51" stroke="currentColor" stroke-opacity="0.22" stroke-width="1.2"/>
+            <line x1="86" y1="55" x2="93" y2="55" stroke="currentColor" stroke-opacity="0.22" stroke-width="1.2"/>
+            <!-- antenna dots (BLE symbol subtle) -->
+            <circle cx="22" cy="44" r="1.5" fill="currentColor" fill-opacity="0.25"/>
+            <circle cx="22" cy="50" r="1.5" fill="currentColor" fill-opacity="0.18"/>
+            <circle cx="22" cy="56" r="1.5" fill="currentColor" fill-opacity="0.11"/>
+          </svg>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-title">Smart Bag — Traveler Pro X1</div>
+        <div class="product-desc">Autonomous luggage with embedded C logic, BLE follow-mode, GPS tracking and anti-theft protection.</div>
+        <div class="product-tags">
+          <span class="product-tag">Embedded C</span>
+          <span class="product-tag">BLE 5.0</span>
+          <span class="product-tag">GPS</span>
+          <span class="product-tag">ESP32</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Event log -->
+    <div class="lbl">Event Log</div>
+    <div class="card">
+      <div class="log-wrap" id="logList">
+        <div class="log-item">
+          <div class="log-ic ok">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+          </div>
+          <div>
+            <div class="log-msg">System initialized successfully</div>
+            <div class="log-ts" id="initTime">—</div>
+          </div>
+        </div>
+        <div class="log-item">
+          <div class="log-ic info">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>
+          </div>
+          <div>
+            <div class="log-msg">BLE connection established</div>
+            <div class="log-ts">—</div>
+          </div>
+        </div>
+        <div class="log-item">
+          <div class="log-ic warn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          </div>
+          <div>
+            <div class="log-msg">GPS module acquiring signal…</div>
+            <div class="log-ts">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="spacer"></div>
+  </div><!-- /dashboard -->
+
+  <!-- ══ LOCATION ══ -->
+  <div class="page" id="page-location">
+
+    <div class="lbl" style="margin-top:0">GPS Status</div>
+    <div class="card row-bet">
+      <div>
+        <div style="font-size:13.5px;font-weight:600;color:var(--t1)">Live Tracking</div>
+        <div style="font-size:10.5px;color:var(--t3);margin-top:2px">Polling every 2 s</div>
+      </div>
+      <div class="gps-badge searching" id="gpsBadge">
+        <div class="gps-dot"></div>
+        <span id="gpsStatusTxt">Searching</span>
+      </div>
+    </div>
+
+    <div class="lbl">Coordinates</div>
+    <div class="card">
+      <div class="coord-row"><div class="coord-k">Latitude</div><div class="coord-v dim" id="locLat">—</div></div>
+      <div class="coord-row"><div class="coord-k">Longitude</div><div class="coord-v dim" id="locLng">—</div></div>
+      <div class="coord-row"><div class="coord-k">Altitude</div><div class="coord-v dim" id="locAlt">—</div></div>
+      <div class="coord-row"><div class="coord-k">Accuracy</div><div class="coord-v dim" id="locAcc">—</div></div>
+      <div class="coord-row"><div class="coord-k">Updated</div><div class="coord-v dim" id="locUpdated">—</div></div>
+    </div>
+
+    <!-- Map placeholder -->
+    <div class="map-box mt10">
+      <div class="map-grid"></div>
+      <div class="map-pin-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+        </svg>
+      </div>
+      <div class="map-note">Connect device to enable live map</div>
+    </div>
+
+    <button class="btn-p mt10" onclick="trackBag()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <path d="m4.93 4.93 4.24 4.24"/><path d="m14.83 9.17 4.24-4.24"/>
+        <path d="m14.83 14.83 4.24 4.24"/><path d="m9.17 14.83-4.24 4.24"/>
+        <circle cx="12" cy="12" r="4"/>
+      </svg>
+      Track Bag Now
+    </button>
+
+    <div class="lbl">Movement</div>
+    <div class="card">
+      <div class="coord-row"><div class="coord-k">Distance</div><div class="coord-v dim" id="locDist">—</div></div>
+      <div class="coord-row"><div class="coord-k">Speed</div><div class="coord-v dim" id="locSpeed">—</div></div>
+      <div class="coord-row"><div class="coord-k">Heading</div><div class="coord-v dim" id="locDir">—</div></div>
+    </div>
+
+    <div class="spacer"></div>
+  </div><!-- /location -->
+
+  <!-- ══ REMOTE ══ -->
+  <div class="page" id="page-remote">
+
+    <div class="lbl" style="margin-top:0">Manual Drive</div>
+    <div class="card">
+      <div class="cmd-bar" id="cmdBar">Last — <span id="cmdVal">None</span></div>
+      <div class="dpad-wrap">
+        <div class="dpad">
+          <button class="dp" data-dir="u" data-cmd="FORWARD">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"/></svg>
+          </button>
+          <button class="dp" data-dir="l" data-cmd="LEFT">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+          </button>
+          <button class="dp" data-dir="s" data-cmd="STOP">
+            <span class="dp-stop">STOP</span>
+          </button>
+          <button class="dp" data-dir="r" data-cmd="RIGHT">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"/></svg>
+          </button>
+          <button class="dp" data-dir="d" data-cmd="BACKWARD">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div class="lbl">Throttle</div>
+    <div class="card">
+      <div class="speed-row">
+        <div class="speed-lbl">Speed</div>
+        <input type="range" id="speedSlider" min="0" max="100" value="50" oninput="updateSpeed(this.value)">
+        <div class="speed-val" id="speedVal">50%</div>
+      </div>
+      <div style="display:flex;justify-content:space-between;margin-top:7px">
+        <span style="font-size:10px;color:var(--t3)">Slow</span>
+        <span style="font-size:10px;color:var(--t3)">Full</span>
+      </div>
+    </div>
+
+    <div class="lbl">Quick Commands</div>
+    <div class="qcgrid">
+      <button class="qc" onclick="sendCmd('FOLLOW_ON')">
+        <div class="qc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="m9 13-3 7"/><path d="m15 13 3 7"/></svg></div>
+        <div class="qc-lbl">Follow Mode</div>
+      </button>
+      <button class="qc" onclick="sendCmd('FIND_ME')">
+        <div class="qc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div class="qc-lbl">Find Me</div>
+      </button>
+      <button class="qc" onclick="sendCmd('LOCK')">
+        <div class="qc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg></div>
+        <div class="qc-lbl">Lock Bag</div>
+      </button>
+      <button class="qc" onclick="sendCmd('ALERT')">
+        <div class="qc-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div class="qc-lbl">Anti-Theft</div>
+      </button>
+    </div>
+
+    <div class="spacer"></div>
+  </div><!-- /remote -->
+
+  <!-- ══ ABOUT ══ -->
+  <div class="page" id="page-about">
+
+    <div class="about-hero">
+      <div class="about-badge">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Embedded Systems Project
+      </div>
+      <div class="about-title">Traveler Pro X1<br>Smart Bag</div>
+      <div class="about-desc">An autonomous luggage system driven by embedded C logic. Uses RSSI-based signal tracking, IMU sensors, and GPS to follow its owner — hands-free.</div>
+    </div>
+
+    <div class="lbl">Core Features</div>
+    <div class="card">
+      <div class="feat">
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="m9 13-3 7"/><path d="m15 13 3 7"/></svg></div>
+        <div><div class="feat-title">Auto-Follow System</div><div class="feat-desc">BLE RSSI directional follow — bag sweeps and locks onto your signal continuously, adjusting motor PWM in real time.</div></div>
+      </div>
+      <div class="feat">
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></div>
+        <div><div class="feat-title">GPS Tracking</div><div class="feat-desc">Live coordinates from NMEA parsing on embedded module. Shows distance, speed, and heading.</div></div>
+      </div>
+      <div class="feat">
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg></div>
+        <div><div class="feat-title">Remote Control</div><div class="feat-desc">Full manual D-pad control with speed adjustment over BLE or WiFi from any browser.</div></div>
+      </div>
+      <div class="feat">
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg></div>
+        <div><div class="feat-title">Anti-Theft Alert</div><div class="feat-desc">Buzzer + vibration alarm when the bag is moved without authorization or signal is lost.</div></div>
+      </div>
+      <div class="feat">
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div>
+        <div><div class="feat-title">Signal Tracking</div><div class="feat-desc">RSSI bar visualization with adaptive motor control based on proximity deltas from scanned positions.</div></div>
+      </div>
+    </div>
+
+    <div class="lbl">Technology Stack</div>
+    <div class="card">
+      <div class="stack-label">Frontend</div>
+      <div class="chips">
+        <span class="chip blue">HTML5</span>
+        <span class="chip blue">CSS3</span>
+        <span class="chip blue">JavaScript ES6+</span>
+        <span class="chip blue">Fetch API</span>
+      </div>
+      <div class="stack-label">Embedded System</div>
+      <div class="chips">
+        <span class="chip teal">C Language</span>
+        <span class="chip teal">ESP32</span>
+        <span class="chip teal">BLE Stack</span>
+        <span class="chip teal">GPS NMEA</span>
+        <span class="chip teal">MPU-6050 IMU</span>
+        <span class="chip teal">Motor PWM</span>
+      </div>
+    </div>
+
+    <div class="lbl">How It Works</div>
+    <div class="card">
+      <div class="feat">
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg></div>
+        <div><div class="feat-title">Signal Tracking</div><div class="feat-desc">RSSI values sampled across directional sweeps. Bag rotates to maximize signal strength, homing onto the owner.</div></div>
+      </div>
+      <div class="feat">
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="2"/><path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/></svg></div>
+        <div><div class="feat-title">Compass & IMU</div><div class="feat-desc">MPU-6050 provides yaw (heading) and acceleration data for movement detection and impact alerts.</div></div>
+      </div>
+      <div class="feat">
+        <div class="feat-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg></div>
+        <div><div class="feat-title">Follow Logic</div><div class="feat-desc">C control loop adjusts L/R motor PWM based on RSSI delta to continuously home in on the owner's device.</div></div>
+      </div>
+    </div>
+
+    <div class="lbl">Roadmap</div>
+    <div class="card">
+      <div class="road"><div class="road-n done">1</div><div class="road-b"><div class="road-title">Basic Movement</div><div class="road-desc">Motor drivers, chassis assembly, serial remote</div></div></div>
+      <div class="road"><div class="road-n done">2</div><div class="road-b"><div class="road-title">Signal Tracking</div><div class="road-desc">BLE RSSI-based directional follow with live feedback</div></div></div>
+      <div class="road"><div class="road-n done">3</div><div class="road-b"><div class="road-title">GPS Integration</div><div class="road-desc">Live coordinates, distance, speed via NMEA</div></div></div>
+      <div class="road"><div class="road-n">4</div><div class="road-b"><div class="road-title">Smart Automation</div><div class="road-desc">Ultrasonic obstacle avoidance, path prediction</div></div></div>
+      <div class="road"><div class="road-n">5</div><div class="road-b"><div class="road-title">Mobile App</div><div class="road-desc">Native Android/iOS companion app</div></div></div>
+    </div>
+
+    <div class="lbl">Future Scope</div>
+    <div class="card">
+      <div class="chips">
+        <span class="chip">AI Tracking</span>
+        <span class="chip">Voice Control</span>
+        <span class="chip">Smart Lock</span>
+        <span class="chip">Solar Charging</span>
+        <span class="chip">Theft Detection ML</span>
+        <span class="chip">Cloud Dashboard</span>
+      </div>
+    </div>
+
+    <div class="spacer"></div>
+  </div><!-- /about -->
+
+  <!-- ══ CONTACT ══ -->
+  <div class="page" id="page-contact">
+
+    <div class="lbl" style="margin-top:0">Developer</div>
+    <div class="dev-hero">
+      <div class="dev-av">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+        </svg>
+      </div>
+      <div class="dev-name">Developer Name</div>
+      <div class="dev-role">Embedded Systems · Frontend Development</div>
+      <div class="dev-quote">"Smart Travel. Effortless Movement." — Building technology that stays invisible so life can move forward.</div>
+    </div>
+
+    <div class="lbl">Project Details</div>
+    <div class="card">
+      <div class="info-item">
+        <div class="info-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="8" width="14" height="13" rx="2"/><path d="M8 8V5a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v3"/></svg></div>
+        <div><div class="info-k">Project</div><div class="info-v">Traveler Pro X1 — Smart Bag</div></div>
+      </div>
+      <div class="info-item">
+        <div class="info-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+        <div><div class="info-k">Institution</div><div class="info-v">Your College / University</div></div>
+      </div>
+      <div class="info-item">
+        <div class="info-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/></svg></div>
+        <div><div class="info-k">Course</div><div class="info-v">B.Tech — Electronics &amp; CS</div></div>
+      </div>
+      <div class="info-item">
+        <div class="info-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg></div>
+        <div><div class="info-k">Year</div><div class="info-v" id="contactYear">—</div></div>
+      </div>
+    </div>
+
+    <div class="lbl">Contact</div>
+    <div class="card">
+      <div class="info-item">
+        <div class="info-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div>
+        <div><div class="info-k">Email</div><div class="info-v"><a href="mailto:developer@example.com">developer@example.com</a></div></div>
+      </div>
+      <div class="info-item">
+        <div class="info-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"/></svg></div>
+        <div><div class="info-k">GitHub</div><div class="info-v"><a href="#">github.com/smart-bag</a></div></div>
+      </div>
+      <div class="info-item">
+        <div class="info-ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg></div>
+        <div><div class="info-k">LinkedIn</div><div class="info-v"><a href="#">linkedin.com/in/developer</a></div></div>
+      </div>
+    </div>
+
+    <div class="lbl">System Info</div>
+    <div class="card">
+      <div class="ver-row"><div class="ver-k">Firmware</div><div class="ver-v">v2.1.4 · C / ESP-IDF</div></div>
+      <div class="ver-row"><div class="ver-k">Web Interface</div><div class="ver-v">v1.0.0 · HTML / CSS / JS</div></div>
+      <div class="ver-row"><div class="ver-k">Protocol</div><div class="ver-v">BLE 5.0 + WiFi AP</div></div>
+      <div class="ver-row"><div class="ver-k">License</div><div class="ver-v">MIT · Open Source</div></div>
+    </div>
+
+    <div class="spacer"></div>
+  </div><!-- /contact -->
+
+</div><!-- /pages -->
+
+<!-- ════════ BOTTOM NAV ════════ -->
+<nav class="bottom-nav">
+  <button class="nav-btn active" data-page="dashboard" onclick="nav('dashboard',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+    <span class="nav-lbl">Dashboard</span>
+  </button>
+  <button class="nav-btn" data-page="location" onclick="nav('location',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+    <span class="nav-lbl">Location</span>
+  </button>
+  <button class="nav-btn" data-page="remote" onclick="nav('remote',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></svg>
+    <span class="nav-lbl">Remote</span>
+  </button>
+  <button class="nav-btn" data-page="about" onclick="nav('about',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+    <span class="nav-lbl">About</span>
+  </button>
+  <button class="nav-btn" data-page="contact" onclick="nav('contact',this)">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+    <span class="nav-lbl">Contact</span>
+  </button>
+</nav>
+
+<div id="toast"></div>
+</div><!-- /app -->
+
+<script>
+/* ════════════════════════════════════════
+   STATE
+════════════════════════════════════════ */
+const S = { following:false, speed:50, rssi:-58, compass:45, gpsFixed:false };
+
+/* ════════════════════════════════════════
+   THEME
+════════════════════════════════════════ */
+function toggleTheme(){
+  const h = document.documentElement;
+  h.dataset.theme = h.dataset.theme==='light' ? 'dark' : 'light';
+  localStorage.setItem('sbTheme', h.dataset.theme);
+  syncThemeIcon();
+}
+function syncThemeIcon(){
+  const dark = document.documentElement.dataset.theme==='dark';
+  document.getElementById('themeBtn').innerHTML = dark
+    ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>`
+    : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>`;
+}
+(function(){
+  const t = localStorage.getItem('sbTheme')||'dark';
+  document.documentElement.dataset.theme = t;
+  syncThemeIcon();
+})();
+
+/* ════════════════════════════════════════
+   NAVIGATION — FULLY ISOLATED PAGES
+════════════════════════════════════════ */
+function nav(name, btn){
+  // Scroll each page to top before switching
+  document.querySelectorAll('.page').forEach(p => {
+    p.classList.remove('active');
+    p.scrollTop = 0;
+  });
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('page-'+name).classList.add('active');
+  btn.classList.add('active');
+}
+
+/* ════════════════════════════════════════
+   TOAST
+════════════════════════════════════════ */
+let _tt;
+function toast(msg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.classList.add('show');
+  clearTimeout(_tt);
+  _tt = setTimeout(()=>el.classList.remove('show'), 2400);
+}
+
+/* ════════════════════════════════════════
+   LOG
+════════════════════════════════════════ */
+const LI = {
+  ok:  `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>`,
+  info:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a11 11 0 0 1 14.08 0"/><path d="M1.42 9a16 16 0 0 1 21.16 0"/><path d="M8.53 16.11a6 6 0 0 1 6.95 0"/><line x1="12" y1="20" x2="12.01" y2="20"/></svg>`,
+  warn:`<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`,
+};
+function addLog(type, msg){
+  const list = document.getElementById('logList');
+  const t = new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+  const d = document.createElement('div');
+  d.className = 'log-item';
+  d.innerHTML = `<div class="log-ic ${type}">${LI[type]}</div><div><div class="log-msg">${msg}</div><div class="log-ts">${t}</div></div>`;
+  list.insertBefore(d, list.firstChild);
+  while(list.children.length>8) list.removeChild(list.lastChild);
+}
+
+/* ════════════════════════════════════════
+   FOLLOW
+════════════════════════════════════════ */
+function toggleFollow(){
+  S.following = !S.following;
+  const btn = document.getElementById('followBtn');
+  const txt = document.getElementById('followTxt');
+  const rm  = document.getElementById('ringMode');
+  const ind = document.getElementById('ind-follow');
+  if(S.following){
+    btn.classList.add('err');
+    txt.textContent = 'Stop Following';
+    ind.classList.add('on');
+    rm.textContent = 'FOLLOW';
+    addLog('info','Auto-follow mode activated');
+    toast('Follow mode started');
+    sendToggle('FOLLOW_ON');
+  } else {
+    btn.classList.remove('err');
+    txt.textContent = 'Start Following';
+    ind.classList.remove('on');
+    rm.textContent = 'STANDBY';
+    addLog('ok','Follow mode stopped');
+    toast('Follow mode stopped');
+    sendToggle('FOLLOW_OFF');
+  }
+}
+
+/* ════════════════════════════════════════
+   FIND ME
+════════════════════════════════════════ */
+function findMe(){
+  const btn = document.getElementById('findMeBtn');
+  btn.style.borderColor='var(--warn)';
+  btn.style.color='var(--warn)';
+  addLog('warn','Find Me signal sent — bag buzzing');
+  toast('Locating bag…');
+  setTimeout(()=>{ btn.style.borderColor=''; btn.style.color=''; },1800);
+  sendToggle('FIND_ME');
+}
+
+/* ════════════════════════════════════════
+   TRACK
+════════════════════════════════════════ */
+function trackBag(){
+  toast('Refreshing GPS…');
+  addLog('info','Manual GPS refresh requested');
+  fetchData();
+}
+
+/* ════════════════════════════════════════
+   SPEED
+════════════════════════════════════════ */
+function updateSpeed(v){
+  S.speed = parseInt(v);
+  document.getElementById('speedVal').textContent = v+'%';
+}
+
+/* ════════════════════════════════════════
+   D-PAD
+════════════════════════════════════════ */
+let _hold=null;
+document.querySelectorAll('.dp').forEach(btn=>{
+  const cmd = btn.dataset.cmd;
+  const press=()=>{ btn.classList.add('pressed'); sendCmd(cmd); _hold=setInterval(()=>sendCmd(cmd),200); };
+  const rel  =()=>{ btn.classList.remove('pressed'); clearInterval(_hold); if(cmd!=='STOP') sendCmd('STOP'); };
+  btn.addEventListener('mousedown',press);
+  btn.addEventListener('mouseup',rel);
+  btn.addEventListener('mouseleave',rel);
+  btn.addEventListener('touchstart',e=>{ e.preventDefault(); press(); },{passive:false});
+  btn.addEventListener('touchend',  e=>{ e.preventDefault(); rel(); },  {passive:false});
+});
+
+function sendCmd(cmd){
+  document.getElementById('cmdVal').textContent = cmd;
+  sendToggle(cmd);
+}
+
+/* ════════════════════════════════════════
+   COMPASS
+════════════════════════════════════════ */
+const DIRS=['N','NE','E','SE','S','SW','W','NW'];
+function updateCompass(deg){
+  document.getElementById('cmpNeedle').style.transform=
+    `translateX(-50%) translateY(-100%) rotate(${deg}deg)`;
+  document.getElementById('cmpDeg').textContent = Math.round(deg)+'°';
+  document.getElementById('cmpDir').textContent = DIRS[Math.round(deg/45)%8];
+}
+
+/* ════════════════════════════════════════
+   SIGNAL
+════════════════════════════════════════ */
+function updateSignal(rssi){
+  const pct = Math.min(1,Math.max(0,(rssi+100)/60));
+  const lit = Math.ceil(pct*5);
+  document.getElementById('rssiVal').textContent = rssi+' dBm';
+  document.querySelectorAll('.sb').forEach((b,i)=>b.classList.toggle('lit',i<lit));
+}
+
+/* ════════════════════════════════════════
+   GPS
+════════════════════════════════════════ */
+function updateGPS(lat,lng,alt,acc){
+  if(!lat||!lng) return;
+  S.gpsFixed=true;
+  const f=v=>v.toFixed(6)+'°';
+  document.getElementById('locLat').textContent=f(lat);
+  document.getElementById('locLng').textContent=f(lng);
+  document.getElementById('locAlt').textContent=(alt||0).toFixed(1)+' m';
+  document.getElementById('locAcc').textContent='±'+(acc||5).toFixed(1)+' m';
+  document.getElementById('locUpdated').textContent=new Date().toLocaleTimeString();
+  ['locLat','locLng','locAlt','locAcc','locUpdated'].forEach(id=>document.getElementById(id).classList.remove('dim'));
+  document.getElementById('ind-gps').classList.add('on');
+  const b=document.getElementById('gpsBadge');
+  b.className='gps-badge fixed';
+  document.getElementById('gpsStatusTxt').textContent='Fixed';
+}
+
+/* ════════════════════════════════════════
+   BACKEND
+════════════════════════════════════════ */
+async function fetchData(){
+  try{
+    const r=await fetch('/get_data');
+    if(!r.ok) throw new Error();
+    const d=await r.json();
+    if(d.rssi!==undefined) updateSignal(d.rssi);
+    if(d.compass!==undefined){ S.compass=d.compass; updateCompass(d.compass); }
+    if(d.lat&&d.lng) updateGPS(d.lat,d.lng,d.alt,d.acc);
+    const mv=e=>{ const el=document.getElementById(e.id); if(el&&e.val!==undefined){ el.textContent=e.val; el.classList.remove('dim'); } };
+    if(d.speed!==undefined) mv({id:'locSpeed',val:d.speed.toFixed(1)+' km/h'});
+    if(d.dist!==undefined)  mv({id:'locDist', val:'~'+d.dist.toFixed(1)+' m'});
+    if(d.dir)               mv({id:'locDir',  val:d.dir});
+    document.getElementById('ind-moving').classList.toggle('on',!!d.moving);
+  } catch{ simulateData(); }
+}
+async function sendToggle(cmd){
+  try{ await fetch('/toggle',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({cmd})}); }
+  catch{}
+}
+
+/* ════════════════════════════════════════
+   SIMULATION
+════════════════════════════════════════ */
+let tick=0;
+function simulateData(){
+  tick++;
+  const rssi=Math.round(-63+Math.sin(tick*0.09)*10+(Math.random()-0.5)*3);
+  updateSignal(rssi);
+  S.compass=(S.compass+0.7)%360;
+  updateCompass(S.compass);
+  if(tick>3){
+    const lat=23.0225+Math.sin(tick*0.04)*0.0001;
+    const lng=72.5714+Math.cos(tick*0.04)*0.0001;
+    updateGPS(lat,lng,53.2,3.5);
+    const spd=S.following?(2.3+Math.random()*0.5):0;
+    const speedEl=document.getElementById('locSpeed');
+    speedEl.textContent=spd.toFixed(1)+' km/h'; speedEl.classList.remove('dim');
+    const distEl=document.getElementById('locDist');
+    distEl.textContent='~'+(1.1+Math.sin(tick*0.07)*0.4).toFixed(1)+' m'; distEl.classList.remove('dim');
+    const dirEl=document.getElementById('locDir');
+    dirEl.textContent=DIRS[Math.floor(S.compass/45)%8]; dirEl.classList.remove('dim');
+  }
+  document.getElementById('ind-moving').classList.toggle('on',S.following);
+  const ss=document.getElementById('sysStatus');
+  ss.textContent=S.following?'Following':'Connected';
+  ss.style.color=S.following?'var(--a)':'var(--ok)';
+}
+
+/* ════════════════════════════════════════
+   INIT
+════════════════════════════════════════ */
+document.getElementById('initTime').textContent =
+  new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});
+document.getElementById('contactYear').textContent = new Date().getFullYear();
+
+updateCompass(45);
+updateSignal(-58);
+
+setInterval(fetchData, 2000);
+fetchData();
+</script>
+</body>
+</html>
